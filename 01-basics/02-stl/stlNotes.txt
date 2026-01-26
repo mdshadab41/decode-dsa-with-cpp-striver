@@ -1,0 +1,284 @@
+# STL in C++ - Quick Reference Notes
+
+## 📚 **What is STL?**
+**Standard Template Library** - Collection of pre-built data structures and algorithms
+- Saves time, no need to implement from scratch
+- Optimized and tested
+- Three main components: **Containers, Iterators, Algorithms**
+
+---
+
+## 🗂️ **1. CONTAINERS**
+
+### **A. Sequence Containers**
+
+#### **Vector** (Dynamic Array)
+```cpp
+#include <vector>
+vector<int> v = {1, 2, 3};
+v.push_back(4);        // Add at end
+v.pop_back();          // Remove last
+v[0] = 10;             // Access by index
+v.size();              // Size
+v.clear();             // Clear all
+```
+**Use when**: Need dynamic array with fast random access
+
+#### **Deque** (Double-ended Queue)
+```cpp
+#include <deque>
+deque<int> dq;
+dq.push_front(1);      // Add at front
+dq.push_back(2);       // Add at back
+dq.pop_front();        // Remove from front
+```
+**Use when**: Need insertion/deletion at both ends
+
+#### **List** (Doubly Linked List)
+```cpp
+#include <list>
+list<int> l = {1, 2, 3};
+l.push_front(0);
+l.push_back(4);
+l.remove(2);           // Remove all 2's
+```
+**Use when**: Frequent insertion/deletion in middle
+
+---
+
+### **B. Container Adapters**
+
+#### **Stack** (LIFO)
+```cpp
+#include <stack>
+stack<int> s;
+s.push(1);             // Add
+s.pop();               // Remove top
+s.top();               // Access top
+s.empty();             // Check if empty
+```
+
+#### **Queue** (FIFO)
+```cpp
+#include <queue>
+queue<int> q;
+q.push(1);             // Add
+q.pop();               // Remove front
+q.front();             // Access front
+q.back();              // Access back
+```
+
+#### **Priority Queue** (Max Heap by default)
+```cpp
+#include <queue>
+priority_queue<int> pq;           // Max heap
+pq.push(10);
+pq.top();              // Get max
+pq.pop();              // Remove max
+
+// Min heap
+priority_queue<int, vector<int>, greater<int>> minPq;
+```
+
+---
+
+### **C. Associative Containers**
+
+#### **Set** (Unique, Sorted)
+```cpp
+#include <set>
+set<int> s = {3, 1, 2};
+s.insert(4);           // Add
+s.erase(2);            // Remove
+s.find(3);             // Find (returns iterator)
+s.count(1);            // Check existence (0 or 1)
+```
+
+#### **Multiset** (Allows Duplicates, Sorted)
+```cpp
+#include <set>
+multiset<int> ms = {1, 2, 2, 3};
+ms.count(2);           // Returns 2
+```
+
+#### **Map** (Key-Value Pairs, Sorted by Key)
+```cpp
+#include <map>
+map<string, int> m;
+m["apple"] = 5;        // Insert/Update
+m["banana"] = 3;
+m.erase("apple");      // Remove
+m.find("banana");      // Find
+m.count("apple");      // Check existence
+```
+
+#### **Unordered Map** (Hash Table, Faster)
+```cpp
+#include <unordered_map>
+unordered_map<string, int> um;
+um["key"] = 10;        // O(1) average
+```
+
+---
+
+### **D. Unordered Containers**
+
+```cpp
+unordered_set<int> us;        // Hash set
+unordered_multiset<int> ums;  // Hash multiset
+unordered_map<int, int> um;   // Hash map
+```
+**Advantage**: O(1) average for insert/search/delete
+
+---
+
+## 🔄 **2. ITERATORS**
+
+Access elements in containers:
+
+```cpp
+vector<int> v = {1, 2, 3, 4};
+
+// Using iterator
+for (auto it = v.begin(); it != v.end(); it++) {
+    cout << *it << " ";
+}
+
+// Using range-based loop (easier!)
+for (int x : v) {
+    cout << x << " ";
+}
+
+// Reverse iterator
+for (auto it = v.rbegin(); it != v.rend(); it++) {
+    cout << *it << " ";
+}
+```
+
+---
+
+## ⚙️ **3. ALGORITHMS**
+
+```cpp
+#include <algorithm>
+```
+
+### **Sorting**
+```cpp
+vector<int> v = {3, 1, 4, 1, 5};
+sort(v.begin(), v.end());              // Ascending
+sort(v.begin(), v.end(), greater<int>()); // Descending
+```
+
+### **Searching**
+```cpp
+// Binary search (array must be sorted)
+binary_search(v.begin(), v.end(), 4);  // Returns true/false
+lower_bound(v.begin(), v.end(), 3);    // First >= 3
+upper_bound(v.begin(), v.end(), 3);    // First > 3
+```
+
+### **Min/Max**
+```cpp
+int minVal = *min_element(v.begin(), v.end());
+int maxVal = *max_element(v.begin(), v.end());
+```
+
+### **Reverse**
+```cpp
+reverse(v.begin(), v.end());
+```
+
+### **Count**
+```cpp
+int cnt = count(v.begin(), v.end(), 1);  // Count occurrences of 1
+```
+
+### **Find**
+```cpp
+auto it = find(v.begin(), v.end(), 4);
+if (it != v.end()) {
+    cout << "Found at index: " << it - v.begin();
+}
+```
+
+### **Accumulate** (Sum)
+```cpp
+#include <numeric>
+int sum = accumulate(v.begin(), v.end(), 0);
+```
+
+### **Unique** (Remove consecutive duplicates)
+```cpp
+sort(v.begin(), v.end());
+v.erase(unique(v.begin(), v.end()), v.end());
+```
+
+### **Next/Prev Permutation**
+```cpp
+next_permutation(v.begin(), v.end());
+prev_permutation(v.begin(), v.end());
+```
+
+---
+
+## 📊 **Quick Comparison**
+
+| Container | Access | Insert | Delete | Sorted | Unique |
+|-----------|--------|--------|--------|--------|--------|
+| vector | O(1) | O(1)* | O(n) | ❌ | ❌ |
+| deque | O(1) | O(1)* | O(n) | ❌ | ❌ |
+| list | O(n) | O(1) | O(1) | ❌ | ❌ |
+| set | O(log n) | O(log n) | O(log n) | ✅ | ✅ |
+| map | O(log n) | O(log n) | O(log n) | ✅ | ✅ |
+| unordered_set | O(1) | O(1) | O(1) | ❌ | ✅ |
+| unordered_map | O(1) | O(1) | O(1) | ❌ | ✅ |
+
+*at end
+
+---
+
+## 🎯 **Common Use Cases**
+
+| Need | Use |
+|------|-----|
+| Dynamic array | `vector` |
+| LIFO operations | `stack` |
+| FIFO operations | `queue` |
+| Get min/max quickly | `priority_queue` |
+| Store unique elements | `set` or `unordered_set` |
+| Key-value storage | `map` or `unordered_map` |
+| Frequency counting | `map` or `unordered_map` |
+| Fast lookup | `unordered_set` or `unordered_map` |
+
+---
+
+## 💡 **Pro Tips**
+
+1. **Auto keyword**: `auto it = v.begin()` (type inference)
+2. **Range-based loops**: Cleaner than iterators
+3. **Use `unordered_*` for speed** when order doesn't matter
+4. **Pass by reference** to avoid copying: `void func(vector<int>& v)`
+5. **`emplace_back` vs `push_back`**: `emplace_back` constructs in-place (slightly faster)
+
+---
+
+## 🚀 **Quick Template**
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <map>
+#include <set>
+#include <queue>
+#include <stack>
+using namespace std;
+
+int main() {
+    // Your code here
+    return 0;
+}
+```
+
+Practice these and you'll master STL! 🎉
