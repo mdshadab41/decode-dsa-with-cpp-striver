@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// method 1 - brute force
+// //approach 1 - Sets - TC - NlogN
 //  void remove_duplicate(vector<int> &arr)
 //  {
 //      int n = arr.size();
@@ -19,6 +19,8 @@ using namespace std;
 //     }
 // }
 
+
+//approach 2 - 2 pointer - TC - NlogN
 int remove_duplicate(vector<int> &arr)
 {
     int n = arr.size();
